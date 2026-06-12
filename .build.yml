@@ -1,0 +1,17 @@
+image: alpine/edge
+oauth: pages.sr.ht/PAGES:RW
+packages:
+  - hut
+  - git
+  - stagit
+secrets:
+  - bfe0f129-aa36-4361-9ee5-5dbb979fe0af 
+environment:
+  site: git.mikuli.cz
+tasks:
+- package: |
+    cd mirrorer
+    ./mirror.sh
+    tar -C web -cvz . > ../site.tar.gz
+- upload: |
+    hut pages publish -d $site site.tar.gz

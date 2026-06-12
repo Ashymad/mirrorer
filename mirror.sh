@@ -17,7 +17,7 @@ while read line; do
     mkdir -p "$wrepodir"
     ln -sf ../style.css ../logo.png "$wrepodir"
     echo "$owner" > "$srepodir/owner"
-    echo "$srepo" > "$srepodir/urls
+    echo "$srepo" > "$srepodir/url"
     echo ":)" > "$srepodir/description"
     env -C "$wrepodir" stagit "$(readlink -f "$srepodir")"
 
