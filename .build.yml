@@ -13,6 +13,6 @@ tasks:
 - package: |
     cd mirrorer
     ./mirror.sh
-    tar -C web -cvz . > ../site.tar.gz
+    tar -C web -cz . > ../site.tar.gz
 - upload: |
     hut pages publish -d $site site.tar.gz
