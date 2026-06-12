@@ -8,6 +8,7 @@ secrets:
   - bfe0f129-aa36-4361-9ee5-5dbb979fe0af 
 environment:
   site: git.mikuli.cz
+  GIT_SSH_COMMAND: ssh -o StrictHostKeyChecking=no
 tasks:
 - package: |
     cd mirrorer
