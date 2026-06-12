@@ -9,8 +9,8 @@ while read line; do
     srepo="$(echo "$line" | cut -d' ' -f1)"
     reponame="$(echo "$srepo" |  sed 's@.*/@@')"
     owner="$(echo "$srepo" | sed 's@.*/\(.*\)/.*@\1@')"
-    srepodir="git/$reponame"
-    wrepodir="web/$reponame"
+    srepodir="$PWD/git/$reponame"
+    wrepodir="$PWD/web/$reponame"
 
     [ -d "$srepodir" ] || git clone --mirror "$srepo" "$srepodir"
 
@@ -19,7 +19,7 @@ while read line; do
     echo "$owner" > "$srepodir/owner"
     echo "$srepo" > "$srepodir/url"
     echo ":)" > "$srepodir/description"
-    env -C "$wrepodir" stagit "$(readlink -f "$srepodir")"
+    ( cd "$wrepodir"; stagit "$srepodir"; )
 
     for drepo in $(echo "$line" | cut -d' ' -f2-); do
         git -C "$srepodir" push --mirror "$drepo"
