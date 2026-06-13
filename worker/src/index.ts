@@ -21,7 +21,7 @@ export default {
     },
 
     async scheduled(event, env, ctx): Promise<void> {
-        let resp = fetch('https://builds.sr.ht/query', {
+        let resp = await fetch('https://builds.sr.ht/query', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,6 +32,9 @@ export default {
             })
         });
 
-        console.log(`trigger fired at ${event.cron}: ${resp.text()}`);
+        resp.text().then(function (text) {
+            console.log(`Response at ${event.cron}: ${text}`);
+        });
+
     },
 } satisfies ExportedHandler<Env>;
