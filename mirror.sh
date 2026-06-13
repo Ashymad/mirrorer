@@ -24,5 +24,5 @@ while read line; do
     ( cd "$wrepodir"; stagit "$srepodir"; )
 done < mirrorlist
 
-cp style.css logo.png web
+cp favicon.png style.css logo.png web
 stagit-index git/* > web/index.html
