@@ -27,7 +27,7 @@ while read line; do
     done
 
     echo "$owner" > "$srepodir/owner"
-    echo "$srepo" > "$srepodir/url"
+    echo "$srepourl" > "$srepodir/url"
     echo ":)" > "$srepodir/description"
 
     mkdir -p "$wrepodir"
