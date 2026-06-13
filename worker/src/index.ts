@@ -32,8 +32,8 @@ export default {
             })
         });
 
-        resp.text().then(function (text) {
-            console.log(`Response at ${event.cron}: ${text}`);
+        resp.json().then(function (obj) {
+            console.log(`Response at ${event.cron}: ${JSON.stringify(obj, null, 2)}`);
         });
 
     },
