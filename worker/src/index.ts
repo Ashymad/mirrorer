@@ -21,7 +21,7 @@ export default {
     },
 
     async scheduled(event, env, ctx): Promise<void> {
-        let resp = await fetch('https://builds.sr.ht/query', {
+        let resp = fetch('https://builds.sr.ht/query', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
