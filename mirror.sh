@@ -2,9 +2,6 @@
 
 set -e
 
-mkdir -p web git
-cp style.css logo.png web
-
 while read line; do
     srepo="$(echo "$line" | cut -d' ' -f1)"
     reponame="$(echo "$srepo" |  sed 's@.*/@@')"
@@ -14,16 +11,18 @@ while read line; do
 
     [ -d "$srepodir" ] || git clone --mirror "$srepo" "$srepodir"
 
-    mkdir -p "$wrepodir"
-    ln -sf ../style.css ../logo.png "$wrepodir"
-    echo "$owner" > "$srepodir/owner"
-    echo "$srepo" > "$srepodir/url"
-    echo ":)" > "$srepodir/description"
-    ( cd "$wrepodir"; stagit "$srepodir"; )
-
     for drepo in $(echo "$line" | cut -d' ' -f2-); do
         git -C "$srepodir" push --mirror "$drepo"
     done
+
+    echo "$owner" > "$srepodir/owner"
+    echo "$srepo" > "$srepodir/url"
+    echo ":)" > "$srepodir/description"
+
+    mkdir -p "$wrepodir"
+    cp style.css logo.png "$wrepodir"
+    ( cd "$wrepodir"; stagit "$srepodir"; )
 done < mirrorlist
 
+cp style.css logo.png web
 stagit-index git/* > web/index.html
