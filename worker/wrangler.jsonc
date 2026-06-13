@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "throbbing-boat-1f5a",
+	"name": "throbbing-dust-427e",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-06-13",
 	"observability": {
