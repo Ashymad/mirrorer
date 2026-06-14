@@ -19,22 +19,45 @@ export default {
     async fetch(req) {
         return new Response(`I am just a humble cloudflare worker :)`);
     },
-
-    async scheduled(event, env, ctx): Promise<void> {
-        let resp = await fetch('https://builds.sr.ht/query', {
-            method: 'POST',
+    async scheduled(event, env, ctx) {
+        let yml_req = await fetch("https://git.sr.ht/query", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${env.SRHTTOKEN}`
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.SRHTTOKEN}`
             },
             body: JSON.stringify({
-                'query': '{ version { major, minor, patch } }'
-            })
+                "query": `{
+                    repositories(filter: {count: 1, search: "~ashymad/mirrorer"}) {
+                        results {
+                            path(path: ".build.yml") {
+                                object {
+                                    ... on TextBlob {
+                                        text
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }`})
         });
-
-        resp.json().then(function (obj) {
-            console.log(`Response at ${event.cron}: ${JSON.stringify(obj, null, 2)}`);
+        let yml = (await yml_req.json()).data.repositories.results[0].path.object.text;
+        let job_req = await fetch("https://builds.sr.ht/query", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.SRHTTOKEN}`
+            },
+            body: JSON.stringify({
+                "query": `mutation ($yml: String!) {
+                    submit(manifest: $yml) {
+                        id
+                    }
+                }`,
+                "variables": {
+                    "yml": yml
+                }})
         });
-
-    },
+        console.log(`Build submitted at ${event.cron}: ${JSON.stringify(await job_req.json())}`);
+    }
 } satisfies ExportedHandler<Env>;

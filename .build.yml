@@ -1,5 +1,7 @@
 image: alpine/edge
 oauth: pages.sr.ht/PAGES:RW
+sources:
+  - https://git.sr.ht/~ashymad/mirrorer
 packages:
   - hut
   - git
