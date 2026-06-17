@@ -28,8 +28,8 @@ export default {
             },
             body: JSON.stringify({
                 "query": `{
-                    repositories(filter: {count: 1, search: "~ashymad/mirrorer"}) {
-                        results {
+                    me {
+                        repository(name: "mirrorer") {
                             path(path: ".build.yml") {
                                 object {
                                     ... on TextBlob {
@@ -39,9 +39,11 @@ export default {
                             }
                         }
                     }
-                }`})
+                }`
+            })
         });
-        let yml = (await yml_req.json()).data.repositories.results[0].path.object.text;
+        let yml_json = await yml_req.json();
+        let yml = yml_json.data.me.repository.path.object.text;
         let job_req = await fetch("https://builds.sr.ht/query", {
             method: "POST",
             headers: {

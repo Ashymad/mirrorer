@@ -17,7 +17,7 @@ while read line; do
     wrepodir="$PWD/web/$reponame"
 
     if [ -d "$srepodir" ]; then
-        git -C "$repodir" remote update
+        git -C "$srepodir" remote update
     else
         git clone --mirror "$srepo" "$srepodir"
     fi
